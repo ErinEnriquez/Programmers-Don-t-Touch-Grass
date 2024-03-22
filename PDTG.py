@@ -24,7 +24,8 @@ class Character:
         self.y = screenHeight - charHeight
         self.vel_y = 0
         self.on_ground = True
-        self.jump_power = 0           
+        self.jump_power = 0 
+        self.image = pygame.image.load('player.png').convert_alpha()  
  
     def jump(self):
         if self.on_ground:
@@ -46,22 +47,23 @@ class Character:
             self.on_ground = True
 
     def draw(self, screen):
-        pygame.draw.rect(screen, charColor, (self.x, self.y, charWidth, charHeight))
+        screen.blit(self.image, (self.x, self.y))
 
 class Obstacle:
     def __init__(self):
         self.x = screenWidth
         self.y = screenHeight - obstacleHeight
         self.vel_x = -obstacleMovingSpeed
+        self.image = pygame.image.load('bush.png').convert_alpha()
 
     def update(self):
         self.x += self.vel_x
-        if self.x + obstacleWidth < 0:
-            self.x = screenWidth
+        if self.x + obstacleWidth > screenWidth:
+            self.x = 0
             self.y = random.randint(50, screenHeight - 50)
 
     def draw(self, screen):
-        pygame.draw.rect(screen, obstacleColor, (self.x, self.y, obstacleWidth, obstacleHeight))
+        screen.blit(self.image, (self.x, self.y))
 
 class Platform:
     def __init__(self, x, y, width, height, speed):
@@ -85,6 +87,8 @@ def main():
     screen = pygame.display.set_mode((screenWidth, screenHeight))
     pygame.display.set_caption("Character Jump")
 
+    background = pygame.image.load('background.png').convert()
+
     clock = pygame.time.Clock()
 
     characterRunning = Character()
@@ -105,7 +109,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     characterRunning.jump()
 
-        screen.fill(bgColor)
+        screen.blit(background,(0,0))
 
         # Draw and move platforms
         for platform in platforms:
