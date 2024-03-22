@@ -6,6 +6,7 @@ screenWidth = 800
 screenHeight = 600
 charWidth = 40
 charHeight = 60
+grassMonsterHeight = 80
 obstacleWidth = 60
 obstacleHeight = 40
 platformWidth = 200
@@ -18,14 +19,15 @@ gravity = 0.2
 platformSpeed = 3            
 obstacleMovingSpeed = 3                          
               
-class Character:
+class Character(pygame.sprite.Sprite):
     def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         self.x = screenWidth // 2 - charWidth // 2
         self.y = screenHeight - charHeight
         self.vel_y = 0
         self.on_ground = True
         self.jump_power = 0 
-        self.image = pygame.image.load('player.png').convert_alpha()  
+        self.image = pygame.image.load('images/player.png').convert_alpha()  
  
     def jump(self):
         if self.on_ground:
@@ -54,16 +56,27 @@ class Obstacle:
         self.x = screenWidth
         self.y = screenHeight - obstacleHeight
         self.vel_x = -obstacleMovingSpeed
-        self.image = pygame.image.load('bush.png').convert_alpha()
+        self.image = pygame.image.load('images/bush.png').convert_alpha()
 
     def update(self):
         self.x += self.vel_x
         if self.x + obstacleWidth > screenWidth:
             self.x = 0
-            self.y = random.randint(50, screenHeight - 50)
+            self.y = random.randint(0, screenHeight - 50)
 
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
+
+class GrassMonster:
+    def __init__(self):
+        self.image = pygame.image.load('images/grassMonster.png').convert_alpha()
+        self.rect = self.image.get_rect()
+        self.x = screenWidth
+        self.y = screenHeight - grassMonsterHeight
+        self.vel_x = -obstacleMovingSpeed
+
+    def update(self, Character):
+        self.x += self.vel_x
 
 class Platform:
     def __init__(self, x, y, width, height, speed):
@@ -87,7 +100,7 @@ def main():
     screen = pygame.display.set_mode((screenWidth, screenHeight))
     pygame.display.set_caption("Character Jump")
 
-    background = pygame.image.load('background.png').convert()
+    background = pygame.image.load('images/background.png').convert()
 
     clock = pygame.time.Clock()
 
