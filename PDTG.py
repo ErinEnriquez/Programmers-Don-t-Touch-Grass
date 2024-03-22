@@ -1,13 +1,9 @@
 import pygame
 import random
 
-
-pygame.init()
 # Constants
 screenWidth = 800                   
 screenHeight = 600
-
-window = pygame.display.set_mode(((screenWidth, screenHeight)))
 charWidth = 40
 charHeight = 60
 obstacleWidth = 60
@@ -20,9 +16,7 @@ obstacleColor = (0, 0, 255)
 bgColor = (0, 0, 0)
 gravity = 0.2
 platformSpeed = 3            
-obstacleMovingSpeed = 3          
-background = pygame.image.load('background.png')       
-obstacle = pygame.image.load('bush.png')         
+obstacleMovingSpeed = 3                          
               
 class Character:
     def __init__(self):
@@ -30,14 +24,13 @@ class Character:
         self.y = screenHeight - charHeight
         self.vel_y = 0
         self.on_ground = True
-        self.jump_power = 0             
+        self.jump_power = 0           
  
     def jump(self):
         if self.on_ground:
             self.jump_power = 15  # Initial jump power
             self.on_ground = False
             self.vely = 0
-
 
     def update(self):
         if self.jump_power > 0:
@@ -66,6 +59,9 @@ class Obstacle:
         if self.x + obstacleWidth < 0:
             self.x = screenWidth
             self.y = random.randint(50, screenHeight - 50)
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, obstacleColor, (self.x, self.y, obstacleWidth, obstacleHeight))
 
 class Platform:
     def __init__(self, x, y, width, height, speed):
