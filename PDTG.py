@@ -45,7 +45,7 @@ class Character(pygame.sprite.Sprite):
 
         if self.y >= screenHeight - charHeight:
             self.y = screenHeight - charHeight
-            self.vel_y = 0
+
             self.on_ground = True
 
     def draw(self, screen):
@@ -98,11 +98,13 @@ class Platform:
 def main():
     pygame.init()
     screen = pygame.display.set_mode((screenWidth, screenHeight))
-    pygame.display.set_caption("Character Jump")
+    pygame.display.set_caption("Programmers Don't Touch Grass")
 
     background = pygame.image.load('images/background.png').convert()
 
     clock = pygame.time.Clock()
+    movingSprites = pygame.sprite.Group()
+    movingSprites.add(characterRunning)
 
     characterRunning = Character()
     obstaclePosition = Obstacle()
@@ -114,7 +116,9 @@ def main():
         platforms.append(platform)
 
     running = True
+
     while running:
+        screen.blit(background,(0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -122,7 +126,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     characterRunning.jump()
 
-        screen.blit(background,(0,0))
+
 
         # Draw and move platforms
         for platform in platforms:
