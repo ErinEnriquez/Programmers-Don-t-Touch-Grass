@@ -103,8 +103,6 @@ def main():
     background = pygame.image.load('images/background.png').convert()
 
     clock = pygame.time.Clock()
-    movingSprites = pygame.sprite.Group()
-    movingSprites.add(characterRunning)
 
     characterRunning = Character()
     obstaclePosition = Obstacle()
